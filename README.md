@@ -64,6 +64,18 @@ Patients decrypt records using their **private key** — making privacy absolute
             │Decrypt + View │
             └───────────────┘
 ```
+---
+
+## 🛠️ Tools & Technology
+
+| Component | Tool Used | Purpose |
+|----------|-----------|---------|
+| Blockchain | Ethereum Sepolia Testnet | Public tamper‑proof logs |
+| Smart Contracts | Solidity | Access & metadata registry |
+| Storage | IPFS + Pinata | Decentralized encrypted storage |
+| Encryption | ECIES + AES‑256 | Dual‑layer end‑to‑end encryption |
+| Wallets | MetaMask / EOA | Ownership & signing |
+| Backend | Node.js + Ethers.js | Contract + encryption logic |
 
 ---
 
@@ -95,7 +107,7 @@ Patients decrypt records using their **private key** — making privacy absolute
 ## ⚙️ Deploy Smart Contract Using Remix
 
 1. Open https://remix.ethereum.org  
-2. Create a new file → `MediSecure.sol` and paste the contract code from [MedSecure.sol](.MedSecure.sol)
+2. Create a new file → `MediSecure.sol` and paste the contract code from [MedSecure.sol](MedSecure.sol)
 3. From **Solidity Compiler** tab → Compile  
 4. From **Deploy & Run** tab:
    - Environment: **Injected Provider (MetaMask Sepolia)**
