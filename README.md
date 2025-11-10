@@ -1,154 +1,163 @@
+# MediSecure 🏥🔐  
+**Decentralized Medical Record Encryption & Sharing on Blockchain**
 
-# MediSecure: Blockchain‑Enabled Medical Record Privacy
+## Team Members
+- **K Ayesha**
+- **Gagan**
+- **Jauhar Mohamed**
+- **Jayanth Kishore N**
 
-## 🏥 Problem & Solution Overview
+## 🚀 Overview
 
-Patients often struggle to control who can view or modify their medical reports. Traditional systems:
-- Store data in centralized servers → vulnerable to leaks.
-- Don’t give patients encryption ownership → hospitals hold the keys.
-- Lack tamper‑proof audit tracking.
+MediSecure enables patients to take **full ownership** of their medical data.  
+Hospitals encrypt records locally and store them on **IPFS**, while only the file reference (CID) and access metadata go on the **Ethereum blockchain**.  
+Patients decrypt records using their **private key** — making privacy absolute (even we cannot see the medical data).
 
-### ✅ Our Solution
-MediSecure provides **privacy‑first medical data management** using ECIES encryption + blockchain access rules.
-
-Patients hold their own **encryption keys**, hospitals upload **encrypted reports** to IPFS, and only authorized users can decrypt using blockchain‑verified access permission.
-
----
-
-## 🔐 Privacy Workflow
-
-1️⃣ Hospital encrypts report using patient public key ❯ Uploads encrypted file to IPFS  
-2️⃣ Encryption key is securely encrypted again using patient wallet pubkey  
-3️⃣ Smart contract logs the record and access permissions  
-4️⃣ Patient retrieves, decrypts, and controls report visibility
+✅ No centralized data leaks  
+✅ Patient-controlled access  
+✅ Hospitals cannot view other hospital uploads  
+✅ End-to-end security with AES-256 + ECIES
 
 ---
 
-## 🧩 System Architecture (Aligned Layout)
+## ✅ Key Features
+
+| Feature | Description |
+|--------|-------------|
+| Decentralized Storage | Report files stored encrypted on IPFS |
+| Smart Contract Access Control | CID linked to patient only |
+| Zero-Zero-Trust Security | Only patient’s private key can decrypt |
+| Multi-Hospital Collaboration | Multiple hospitals can add records to one patient |
+| Privacy by Design | No identifiable medical data stored on-chain |
+
+---
+
+## 🏗 Architecture Diagram — Full Flow (Patient + 2 Hospitals)
 
 ```plaintext
-                   ┌────────────────────┐
-                   │     Hospital       │
-                   │ - Encrypts Report  │
-                   │ - Submits CID      │
-                   └─────────┬──────────┘
-                             │ (CID + Encrypted AES Key)
-                             ▼
-                    ┌────────────────────┐
-                    │  Smart Contract    │
-                    │  - Record Metadata │
-                    │  - Access Control  │
-                    └─────────┬──────────┘
-                              │ (CID)
-                              ▼
-                     ┌─────────────────┐
-                     │      IPFS       │
-                     │ Stores Encrypted│
-                     │ Medical Records │
-                     └─────────┬───────┘
-                               │
-                               ▼
-                     ┌─────────────────┐
-                     │    Patient      │
-                     │ - Owns Private  │
-                     │   Key           │
-                     │ - Decrypts File │
-                     └─────────────────┘
+ ┌─────────────┐         ┌─────────────┐
+ │ Hospital A  │         │ Hospital B  │
+ │Encrypt file │         │Encrypt file │
+ └──────┬──────┘         └──────┬──────┘
+        │ AES + Patient PubKey  │
+        └────────┬──────────────┘
+                 ▼
+          ┌──────────────┐
+          │  Encrypted   │
+          │ Medical File │
+          └──────┬───────┘
+                 │ Upload via Pinata
+                 ▼
+          ┌──────────────┐
+          │    IPFS      │
+          └──────┬───────┘
+                 │ CID returned
+                 ▼
+         ┌────────────────────┐
+         │ Smart Contract     │
+         │ CID + AES Key (Enc)│
+         └─────────┬──────────┘
+                   │ Patient fetches
+                   ▼
+            ┌───────────────┐
+            │   Patient     │
+            │Decrypt + View │
+            └───────────────┘
 ```
 
 ---
 
-## 🛠️ Tools & Technology
+## 🛡 Security Notes
 
-| Component | Tool Used | Purpose |
-|----------|-----------|---------|
-| Blockchain | Ethereum Sepolia Testnet | Public tamper‑proof logs |
-| Smart Contracts | Solidity | Access & metadata registry |
-| Storage | IPFS + Pinata | Decentralized encrypted storage |
-| Encryption | ECIES + AES‑256 | Dual‑layer end‑to‑end encryption |
-| Wallets | MetaMask / EOA | Ownership & signing |
-| Backend | Node.js + Ethers.js | Contract + encryption logic |
+✅ Hospital cannot read encrypted backup once uploaded  
+✅ IPFS gateway cannot see file contents  
+✅ Blockchain stores **no** plain medical data  
+✅ Even if CID leaks, file is useless without private key  
 
 ---
 
-## ✅ Features Implemented
+## 📌 Smart Contract
 
-- ✅ On‑chain public key registration
-- ✅ Encrypted record upload from hospital
-- ✅ Secure IPFS storage
-- ✅ Record retrieval & decryption by patient
-- ✅ Event‑based tracking (RecordCreated)
+✅ Handles only record indexing  
+❌ No medical data stored — only CIDs + encrypted AES keys
+
 
 ---
 
-## 🚀 Hackathon Impact
+### Optional Reference Contract (Sepolia Testnet)
 
-| Criterion | Score Contribution |
-|----------|-------------------|
-| Innovation | ✅ Patient‑owned key security |
-| Technical Difficulty | ✅ Hybrid blockchain‑encryption architecture |
-| Privacy & Safety | ✅ No plaintext leaves hospital |
-| User Benefit | ✅ Control of personal medical data |
-
----
-
-## Installation & Usage Instructions
-
-### Prerequisites
-
-* Node.js (v18 or later recommended)
-* Web3 wallet (Metamask)
-* Sepolia ETH for interactions
-* Pinata account for IPFS storage
-
-### Setup
-
-1. Clone the project:
-
-```bash
-git clone <repository_url>
-cd Medisecure-blockchain
+```
+0xf34E27C7FACE16c27a02f9559879051d0e4A55A1
 ```
 
-2. Install dependencies:
+---
 
+## ⚙️ Deploy Smart Contract Using Remix
+
+1. Open https://remix.ethereum.org  
+2. Create a new file → `MediSecure.sol` and paste the contract code from [MedSecure.sol](.MedSecure.sol)
+3. From **Solidity Compiler** tab → Compile  
+4. From **Deploy & Run** tab:
+   - Environment: **Injected Provider (MetaMask Sepolia)**
+   - Click **Deploy**
+5. Copy deployed contract address into `.env`
+
+---
+
+## 🔧 Installation & Usage (Local Runner)
+
+### Requirements
+- Node.js 18+
+- MetaMask wallet
+- Sepolia test ETH
+- Pinata account (IPFS)
+
+### Clone & Install
 ```bash
+git clone <your_repo>
+cd MediSecure
 npm install
 ```
 
-3. Create a `.env` file with required secrets:
+### Generate Patient Keys
 
+```bash
+node generateKeys.js
+```
+
+Paste the generated values into `.env`.
+
+### Setup Environment
+Create `.env`
 ```env
-RPC_URL=<your_rpc_url>
-CONTRACT_ADDRESS=<deployed_contract_address>
-PATIENT_ADDRESS=<your_patient_wallet>
-PATIENT_PUBHEX=<your_generated_key>
-HOSPITAL_PRIVATE_KEY=<hospital_wallet_private_key>
-PINATA_JWT=<your_pinata_jwt>
+RPC_URL=<your Infura/Alchemy RPC URL>
+CONTRACT_ADDRESS=<your contract or optional one above>
+PINATA_API_KEY=<your key>
+PINATA_API_SECRET=<your secret>
+PATIENT_ADDRESS=<patient wallet>
+PATIENT_PRV_KEY=<private key for decryption>
+PATIENT_PUBHEX=<public encryption key>
+HOSPITAL_PRIVATE_KEY=<hospital wallet key>
 ```
 
-### Upload Encrypted Medical Records
 
+### Upload File (Hospital)
 ```bash
-node hospital_upload.js <medical_file.pdf>
+node hospital_upload.js <report.pdf>
 ```
 
-This encrypts the file using the patient’s public key, uploads it to IPFS, and writes the CID on-chain.
-
-### Retrieve & Decrypt Medical Records
-
-```bash
-node patient_download.js <recordId>
-```
-
-This fetches the CID and encrypted symmetric key from the blockchain, decrypts it, and restores the original medical file.
-
-
-## 👥 Team & Attribution
-Built for the Hackathon by **Team MediSecure**.
+✔ Encrypts  
+✔ Uploads to IPFS  
+✔ Stores metadata on blockchain
 
 ---
 
-## 📌 Note
-Keep your private keys safe. Smart contract stores **no sensitive data** — only encrypted pointers.
+### Download + Decrypt (Patient)
+```bash
+node patient_download.js <record_index>
+```
+
+✔ Retrieves CID  
+✔ Decrypts AES key  
+✔ Restores original medical record
 
