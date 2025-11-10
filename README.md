@@ -126,7 +126,7 @@ Patients decrypt records using their **private key** — making privacy absolute
 
 ### Clone & Install
 ```bash
-git clone <your_repo>
+git clone https://github.com/jkholick/MediSecure.git
 cd MediSecure
 npm install
 ```
